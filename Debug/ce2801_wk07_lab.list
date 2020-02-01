@@ -1,0 +1,1475 @@
+
+ce2801_wk07_lab.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   000001c4  08000000  08000000  00010000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         0000086c  080001c4  080001c4  000101c4  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       00000000  08000a30  08000a30  0002006c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .ARM.extab    00000000  08000a30  08000a30  0002006c  2**0
+                  CONTENTS
+  4 .ARM          00000000  08000a30  08000a30  0002006c  2**0
+                  CONTENTS
+  5 .preinit_array 00000000  08000a30  08000a30  0002006c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .init_array   00000004  08000a30  08000a30  00010a30  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  7 .fini_array   00000004  08000a34  08000a34  00010a34  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  8 .data         0000006c  20000000  08000a38  00020000  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          0000001c  2000006c  08000aa4  0002006c  2**2
+                  ALLOC
+ 10 ._user_heap_stack 00000600  20000088  08000aa4  00020088  2**0
+                  ALLOC
+ 11 .ARM.attributes 00000030  00000000  00000000  0002006c  2**0
+                  CONTENTS, READONLY
+ 12 .debug_line   000004e2  00000000  00000000  0002009c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_info   0000012c  00000000  00000000  0002057e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 14 .debug_abbrev 0000009e  00000000  00000000  000206aa  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 15 .debug_aranges 00000108  00000000  00000000  00020748  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 16 .debug_str    0000013f  00000000  00000000  00020850  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 17 .debug_ranges 00000020  00000000  00000000  00020990  2**3
+                  CONTENTS, READONLY, DEBUGGING
+ 18 .debug_frame  0000002c  00000000  00000000  000209b0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+080001c4 <__do_global_dtors_aux>:
+ 80001c4:	b510      	push	{r4, lr}
+ 80001c6:	4c05      	ldr	r4, [pc, #20]	; (80001dc <__do_global_dtors_aux+0x18>)
+ 80001c8:	7823      	ldrb	r3, [r4, #0]
+ 80001ca:	b933      	cbnz	r3, 80001da <__do_global_dtors_aux+0x16>
+ 80001cc:	4b04      	ldr	r3, [pc, #16]	; (80001e0 <__do_global_dtors_aux+0x1c>)
+ 80001ce:	b113      	cbz	r3, 80001d6 <__do_global_dtors_aux+0x12>
+ 80001d0:	4804      	ldr	r0, [pc, #16]	; (80001e4 <__do_global_dtors_aux+0x20>)
+ 80001d2:	f3af 8000 	nop.w
+ 80001d6:	2301      	movs	r3, #1
+ 80001d8:	7023      	strb	r3, [r4, #0]
+ 80001da:	bd10      	pop	{r4, pc}
+ 80001dc:	2000006c 	.word	0x2000006c
+ 80001e0:	00000000 	.word	0x00000000
+ 80001e4:	08000a18 	.word	0x08000a18
+
+080001e8 <frame_dummy>:
+ 80001e8:	b508      	push	{r3, lr}
+ 80001ea:	4b03      	ldr	r3, [pc, #12]	; (80001f8 <frame_dummy+0x10>)
+ 80001ec:	b11b      	cbz	r3, 80001f6 <frame_dummy+0xe>
+ 80001ee:	4903      	ldr	r1, [pc, #12]	; (80001fc <frame_dummy+0x14>)
+ 80001f0:	4803      	ldr	r0, [pc, #12]	; (8000200 <frame_dummy+0x18>)
+ 80001f2:	f3af 8000 	nop.w
+ 80001f6:	bd08      	pop	{r3, pc}
+ 80001f8:	00000000 	.word	0x00000000
+ 80001fc:	20000070 	.word	0x20000070
+ 8000200:	08000a18 	.word	0x08000a18
+
+08000204 <delay_us>:
+ 8000204:	b406      	push	{r1, r2}
+ 8000206:	f04f 0206 	mov.w	r2, #6
+ 800020a:	3a01      	subs	r2, #1
+ 800020c:	d1fd      	bne.n	800020a <delay_us+0x6>
+ 800020e:	3901      	subs	r1, #1
+ 8000210:	d1f9      	bne.n	8000206 <delay_us+0x2>
+ 8000212:	bc06      	pop	{r1, r2}
+ 8000214:	4770      	bx	lr
+
+08000216 <delay_ms>:
+ 8000216:	b406      	push	{r1, r2}
+ 8000218:	f241 42d5 	movw	r2, #5333	; 0x14d5
+ 800021c:	3a01      	subs	r2, #1
+ 800021e:	d1fd      	bne.n	800021c <delay_ms+0x6>
+ 8000220:	3901      	subs	r1, #1
+ 8000222:	d1f9      	bne.n	8000218 <delay_ms+0x2>
+ 8000224:	bc06      	pop	{r1, r2}
+ 8000226:	4770      	bx	lr
+
+08000228 <delay_s>:
+ 8000228:	b506      	push	{r1, r2, lr}
+ 800022a:	460a      	mov	r2, r1
+ 800022c:	f44f 717a 	mov.w	r1, #1000	; 0x3e8
+ 8000230:	f7ff fff1 	bl	8000216 <delay_ms>
+ 8000234:	3a01      	subs	r2, #1
+ 8000236:	d1f9      	bne.n	800022c <delay_s+0x4>
+ 8000238:	e8bd 4006 	ldmia.w	sp!, {r1, r2, lr}
+ 800023c:	4770      	bx	lr
+	...
+
+08000240 <key_init>:
+ 8000240:	b406      	push	{r1, r2}
+ 8000242:	4940      	ldr	r1, [pc, #256]	; (8000344 <one_hot_to_binary+0x10>)
+ 8000244:	6b0a      	ldr	r2, [r1, #48]	; 0x30
+ 8000246:	f042 0204 	orr.w	r2, r2, #4
+ 800024a:	630a      	str	r2, [r1, #48]	; 0x30
+ 800024c:	493e      	ldr	r1, [pc, #248]	; (8000348 <one_hot_to_binary+0x14>)
+ 800024e:	f64a 22aa 	movw	r2, #43690	; 0xaaaa
+ 8000252:	818a      	strh	r2, [r1, #12]
+ 8000254:	bc06      	pop	{r1, r2}
+ 8000256:	4770      	bx	lr
+
+08000258 <key_get>:
+ 8000258:	b50e      	push	{r1, r2, r3, lr}
+ 800025a:	f000 f83a 	bl	80002d2 <key_get_input>
+ 800025e:	2800      	cmp	r0, #0
+ 8000260:	d012      	beq.n	8000288 <key_get+0x30>
+ 8000262:	f3c0 0203 	ubfx	r2, r0, #0, #4
+ 8000266:	f3c0 1303 	ubfx	r3, r0, #4, #4
+ 800026a:	4611      	mov	r1, r2
+ 800026c:	f000 f862 	bl	8000334 <one_hot_to_binary>
+ 8000270:	4602      	mov	r2, r0
+ 8000272:	4619      	mov	r1, r3
+ 8000274:	f000 f85e 	bl	8000334 <one_hot_to_binary>
+ 8000278:	4603      	mov	r3, r0
+ 800027a:	f04f 0104 	mov.w	r1, #4
+ 800027e:	fb01 2003 	mla	r0, r1, r3, r2
+ 8000282:	f100 0001 	add.w	r0, r0, #1
+ 8000286:	e001      	b.n	800028c <key_get+0x34>
+ 8000288:	f04f 0000 	mov.w	r0, #0
+ 800028c:	e8bd 400e 	ldmia.w	sp!, {r1, r2, r3, lr}
+ 8000290:	4770      	bx	lr
+
+08000292 <key_get_block>:
+ 8000292:	b500      	push	{lr}
+ 8000294:	f7ff ffe0 	bl	8000258 <key_get>
+ 8000298:	2800      	cmp	r0, #0
+ 800029a:	d0fb      	beq.n	8000294 <key_get_block+0x2>
+ 800029c:	f85d eb04 	ldr.w	lr, [sp], #4
+ 80002a0:	4770      	bx	lr
+
+080002a2 <key_get_char>:
+ 80002a2:	b506      	push	{r1, r2, lr}
+ 80002a4:	f7ff ffd8 	bl	8000258 <key_get>
+ 80002a8:	4601      	mov	r1, r0
+ 80002aa:	2900      	cmp	r1, #0
+ 80002ac:	d004      	beq.n	80002b8 <key_get_char+0x16>
+ 80002ae:	f1a1 0101 	sub.w	r1, r1, #1
+ 80002b2:	4a26      	ldr	r2, [pc, #152]	; (800034c <one_hot_to_binary+0x18>)
+ 80002b4:	5c50      	ldrb	r0, [r2, r1]
+ 80002b6:	e001      	b.n	80002bc <key_get_char+0x1a>
+ 80002b8:	f04f 0000 	mov.w	r0, #0
+ 80002bc:	e8bd 4006 	ldmia.w	sp!, {r1, r2, lr}
+ 80002c0:	4770      	bx	lr
+
+080002c2 <key_get_char_block>:
+ 80002c2:	b500      	push	{lr}
+ 80002c4:	f7ff ffed 	bl	80002a2 <key_get_char>
+ 80002c8:	2800      	cmp	r0, #0
+ 80002ca:	d0fb      	beq.n	80002c4 <key_get_char_block+0x2>
+ 80002cc:	f85d eb04 	ldr.w	lr, [sp], #4
+ 80002d0:	4770      	bx	lr
+
+080002d2 <key_get_input>:
+ 80002d2:	b53e      	push	{r1, r2, r3, r4, r5, lr}
+ 80002d4:	4a1c      	ldr	r2, [pc, #112]	; (8000348 <one_hot_to_binary+0x14>)
+ 80002d6:	f04f 03ff 	mov.w	r3, #255	; 0xff
+ 80002da:	7513      	strb	r3, [r2, #20]
+ 80002dc:	f04f 0500 	mov.w	r5, #0
+ 80002e0:	f44f 43aa 	mov.w	r3, #21760	; 0x5500
+ 80002e4:	8013      	strh	r3, [r2, #0]
+ 80002e6:	f04f 010a 	mov.w	r1, #10
+ 80002ea:	f7ff ff8b 	bl	8000204 <delay_us>
+ 80002ee:	7c14      	ldrb	r4, [r2, #16]
+ 80002f0:	f04f 0355 	mov.w	r3, #85	; 0x55
+ 80002f4:	8013      	strh	r3, [r2, #0]
+ 80002f6:	f04f 010a 	mov.w	r1, #10
+ 80002fa:	f7ff ff83 	bl	8000204 <delay_us>
+ 80002fe:	7c10      	ldrb	r0, [r2, #16]
+ 8000300:	f364 0003 	bfi	r0, r4, #0, #4
+ 8000304:	2d00      	cmp	r5, #0
+ 8000306:	d108      	bne.n	800031a <key_get_input+0x48>
+ 8000308:	2800      	cmp	r0, #0
+ 800030a:	d006      	beq.n	800031a <key_get_input+0x48>
+ 800030c:	f04f 0501 	mov.w	r5, #1
+ 8000310:	f04f 0101 	mov.w	r1, #1
+ 8000314:	f7ff ff7f 	bl	8000216 <delay_ms>
+ 8000318:	e7e2      	b.n	80002e0 <key_get_input+0xe>
+ 800031a:	490d      	ldr	r1, [pc, #52]	; (8000350 <one_hot_to_binary+0x1c>)
+ 800031c:	780a      	ldrb	r2, [r1, #0]
+ 800031e:	2800      	cmp	r0, #0
+ 8000320:	d004      	beq.n	800032c <key_get_input+0x5a>
+ 8000322:	2a00      	cmp	r2, #0
+ 8000324:	d002      	beq.n	800032c <key_get_input+0x5a>
+ 8000326:	4290      	cmp	r0, r2
+ 8000328:	d000      	beq.n	800032c <key_get_input+0x5a>
+ 800032a:	4610      	mov	r0, r2
+ 800032c:	7008      	strb	r0, [r1, #0]
+ 800032e:	e8bd 403e 	ldmia.w	sp!, {r1, r2, r3, r4, r5, lr}
+ 8000332:	4770      	bx	lr
+
+08000334 <one_hot_to_binary>:
+ 8000334:	b402      	push	{r1}
+ 8000336:	fab1 f181 	clz	r1, r1
+ 800033a:	f1c1 001f 	rsb	r0, r1, #31
+ 800033e:	bc02      	pop	{r1}
+ 8000340:	4770      	bx	lr
+ 8000342:	0000      	.short	0x0000
+ 8000344:	40023800 	.word	0x40023800
+ 8000348:	40020800 	.word	0x40020800
+ 800034c:	20000001 	.word	0x20000001
+ 8000350:	20000000 	.word	0x20000000
+
+08000354 <lcd_init>:
+ 8000354:	b502      	push	{r1, lr}
+ 8000356:	f000 f87f 	bl	8000458 <lcd_port_setup>
+ 800035a:	f04f 0128 	mov.w	r1, #40	; 0x28
+ 800035e:	f7ff ff5a 	bl	8000216 <delay_ms>
+ 8000362:	f04f 0138 	mov.w	r1, #56	; 0x38
+ 8000366:	f000 f891 	bl	800048c <lcd_write_instruction>
+ 800036a:	f04f 0138 	mov.w	r1, #56	; 0x38
+ 800036e:	f000 f88d 	bl	800048c <lcd_write_instruction>
+ 8000372:	f04f 010f 	mov.w	r1, #15
+ 8000376:	f000 f889 	bl	800048c <lcd_write_instruction>
+ 800037a:	f000 f807 	bl	800038c <lcd_clear>
+ 800037e:	f04f 0106 	mov.w	r1, #6
+ 8000382:	f000 f883 	bl	800048c <lcd_write_instruction>
+ 8000386:	e8bd 4002 	ldmia.w	sp!, {r1, lr}
+ 800038a:	4770      	bx	lr
+
+0800038c <lcd_clear>:
+ 800038c:	b502      	push	{r1, lr}
+ 800038e:	f04f 0101 	mov.w	r1, #1
+ 8000392:	f000 f87b 	bl	800048c <lcd_write_instruction>
+ 8000396:	f44f 61be 	mov.w	r1, #1520	; 0x5f0
+ 800039a:	f7ff ff33 	bl	8000204 <delay_us>
+ 800039e:	e8bd 4002 	ldmia.w	sp!, {r1, lr}
+ 80003a2:	4770      	bx	lr
+
+080003a4 <lcd_home>:
+ 80003a4:	b502      	push	{r1, lr}
+ 80003a6:	f04f 0102 	mov.w	r1, #2
+ 80003aa:	f000 f86f 	bl	800048c <lcd_write_instruction>
+ 80003ae:	f44f 61be 	mov.w	r1, #1520	; 0x5f0
+ 80003b2:	f7ff ff27 	bl	8000204 <delay_us>
+ 80003b6:	e8bd 4002 	ldmia.w	sp!, {r1, lr}
+ 80003ba:	4770      	bx	lr
+
+080003bc <lcd_set_position>:
+ 80003bc:	b50e      	push	{r1, r2, r3, lr}
+ 80003be:	2901      	cmp	r1, #1
+ 80003c0:	dc0e      	bgt.n	80003e0 <lcd_set_position+0x24>
+ 80003c2:	2a27      	cmp	r2, #39	; 0x27
+ 80003c4:	dc0c      	bgt.n	80003e0 <lcd_set_position+0x24>
+ 80003c6:	f7ff ffed 	bl	80003a4 <lcd_home>
+ 80003ca:	f04f 0328 	mov.w	r3, #40	; 0x28
+ 80003ce:	fb03 f301 	mul.w	r3, r3, r1
+ 80003d2:	4413      	add	r3, r2
+ 80003d4:	f04f 0114 	mov.w	r1, #20
+ 80003d8:	f000 f858 	bl	800048c <lcd_write_instruction>
+ 80003dc:	3b01      	subs	r3, #1
+ 80003de:	d1f9      	bne.n	80003d4 <lcd_set_position+0x18>
+ 80003e0:	e8bd 400e 	ldmia.w	sp!, {r1, r2, r3, lr}
+ 80003e4:	4770      	bx	lr
+
+080003e6 <lcd_print_string>:
+ 80003e6:	b50e      	push	{r1, r2, r3, lr}
+ 80003e8:	460a      	mov	r2, r1
+ 80003ea:	f04f 0300 	mov.w	r3, #0
+ 80003ee:	5cd1      	ldrb	r1, [r2, r3]
+ 80003f0:	2900      	cmp	r1, #0
+ 80003f2:	d004      	beq.n	80003fe <lcd_print_string+0x18>
+ 80003f4:	f000 f86c 	bl	80004d0 <lcd_write_data>
+ 80003f8:	f103 0301 	add.w	r3, r3, #1
+ 80003fc:	e7f7      	b.n	80003ee <lcd_print_string+0x8>
+ 80003fe:	e8bd 400e 	ldmia.w	sp!, {r1, r2, r3, lr}
+ 8000402:	4770      	bx	lr
+
+08000404 <lcd_print_num>:
+ 8000404:	b51e      	push	{r1, r2, r3, r4, lr}
+ 8000406:	f000 f87a 	bl	80004fe <num_to_ascii>
+ 800040a:	4602      	mov	r2, r0
+ 800040c:	f04f 0304 	mov.w	r3, #4
+ 8000410:	f04f 0400 	mov.w	r4, #0
+ 8000414:	f243 0130 	movw	r1, #12336	; 0x3030
+ 8000418:	f2c3 0130 	movt	r1, #12336	; 0x3030
+ 800041c:	428a      	cmp	r2, r1
+ 800041e:	d00e      	beq.n	800043e <lcd_print_num+0x3a>
+ 8000420:	f3c2 0107 	ubfx	r1, r2, #0, #8
+ 8000424:	2930      	cmp	r1, #48	; 0x30
+ 8000426:	d101      	bne.n	800042c <lcd_print_num+0x28>
+ 8000428:	2c00      	cmp	r4, #0
+ 800042a:	d003      	beq.n	8000434 <lcd_print_num+0x30>
+ 800042c:	f04f 0401 	mov.w	r4, #1
+ 8000430:	f000 f84e 	bl	80004d0 <lcd_write_data>
+ 8000434:	ea4f 2212 	mov.w	r2, r2, lsr #8
+ 8000438:	3b01      	subs	r3, #1
+ 800043a:	d1f1      	bne.n	8000420 <lcd_print_num+0x1c>
+ 800043c:	e003      	b.n	8000446 <lcd_print_num+0x42>
+ 800043e:	f04f 0130 	mov.w	r1, #48	; 0x30
+ 8000442:	f000 f845 	bl	80004d0 <lcd_write_data>
+ 8000446:	e8bd 401e 	ldmia.w	sp!, {r1, r2, r3, r4, lr}
+ 800044a:	4770      	bx	lr
+
+0800044c <lcd_print_char>:
+ 800044c:	b500      	push	{lr}
+ 800044e:	f000 f83f 	bl	80004d0 <lcd_write_data>
+ 8000452:	f85d eb04 	ldr.w	lr, [sp], #4
+ 8000456:	4770      	bx	lr
+
+08000458 <lcd_port_setup>:
+ 8000458:	b406      	push	{r1, r2}
+ 800045a:	4965      	ldr	r1, [pc, #404]	; (80005f0 <variable_bfi+0x42>)
+ 800045c:	6b0a      	ldr	r2, [r1, #48]	; 0x30
+ 800045e:	f042 0205 	orr.w	r2, r2, #5
+ 8000462:	630a      	str	r2, [r1, #48]	; 0x30
+ 8000464:	4963      	ldr	r1, [pc, #396]	; (80005f4 <variable_bfi+0x46>)
+ 8000466:	680a      	ldr	r2, [r1, #0]
+ 8000468:	f245 5300 	movw	r3, #21760	; 0x5500
+ 800046c:	f2c0 0355 	movt	r3, #85	; 0x55
+ 8000470:	ea42 0203 	orr.w	r2, r2, r3
+ 8000474:	600a      	str	r2, [r1, #0]
+ 8000476:	4960      	ldr	r1, [pc, #384]	; (80005f8 <variable_bfi+0x4a>)
+ 8000478:	680a      	ldr	r2, [r1, #0]
+ 800047a:	f240 0300 	movw	r3, #0
+ 800047e:	f2c0 0315 	movt	r3, #21
+ 8000482:	ea42 0203 	orr.w	r2, r2, r3
+ 8000486:	600a      	str	r2, [r1, #0]
+ 8000488:	bc06      	pop	{r1, r2}
+ 800048a:	4770      	bx	lr
+
+0800048c <lcd_write_instruction>:
+ 800048c:	b53e      	push	{r1, r2, r3, r4, r5, lr}
+ 800048e:	4a5a      	ldr	r2, [pc, #360]	; (80005f8 <variable_bfi+0x4a>)
+ 8000490:	6953      	ldr	r3, [r2, #20]
+ 8000492:	f423 63e0 	bic.w	r3, r3, #1792	; 0x700
+ 8000496:	f443 6380 	orr.w	r3, r3, #1024	; 0x400
+ 800049a:	6153      	str	r3, [r2, #20]
+ 800049c:	4c55      	ldr	r4, [pc, #340]	; (80005f4 <variable_bfi+0x46>)
+ 800049e:	6965      	ldr	r5, [r4, #20]
+ 80004a0:	f361 150b 	bfi	r5, r1, #4, #8
+ 80004a4:	6165      	str	r5, [r4, #20]
+ 80004a6:	f423 6380 	bic.w	r3, r3, #1024	; 0x400
+ 80004aa:	6153      	str	r3, [r2, #20]
+ 80004ac:	2901      	cmp	r1, #1
+ 80004ae:	d008      	beq.n	80004c2 <long_delay>
+ 80004b0:	2902      	cmp	r1, #2
+ 80004b2:	d006      	beq.n	80004c2 <long_delay>
+ 80004b4:	2903      	cmp	r1, #3
+ 80004b6:	d004      	beq.n	80004c2 <long_delay>
+
+080004b8 <short_delay>:
+ 80004b8:	f04f 0125 	mov.w	r1, #37	; 0x25
+ 80004bc:	f7ff fea2 	bl	8000204 <delay_us>
+ 80004c0:	e003      	b.n	80004ca <exit>
+
+080004c2 <long_delay>:
+ 80004c2:	f44f 61be 	mov.w	r1, #1520	; 0x5f0
+ 80004c6:	f7ff fe9d 	bl	8000204 <delay_us>
+
+080004ca <exit>:
+ 80004ca:	e8bd 403e 	ldmia.w	sp!, {r1, r2, r3, r4, r5, lr}
+ 80004ce:	4770      	bx	lr
+
+080004d0 <lcd_write_data>:
+ 80004d0:	b53e      	push	{r1, r2, r3, r4, r5, lr}
+ 80004d2:	4a49      	ldr	r2, [pc, #292]	; (80005f8 <variable_bfi+0x4a>)
+ 80004d4:	6953      	ldr	r3, [r2, #20]
+ 80004d6:	f423 63e0 	bic.w	r3, r3, #1792	; 0x700
+ 80004da:	f443 63a0 	orr.w	r3, r3, #1280	; 0x500
+ 80004de:	6153      	str	r3, [r2, #20]
+ 80004e0:	4c44      	ldr	r4, [pc, #272]	; (80005f4 <variable_bfi+0x46>)
+ 80004e2:	6965      	ldr	r5, [r4, #20]
+ 80004e4:	f361 150b 	bfi	r5, r1, #4, #8
+ 80004e8:	6165      	str	r5, [r4, #20]
+ 80004ea:	f423 6380 	bic.w	r3, r3, #1024	; 0x400
+ 80004ee:	6153      	str	r3, [r2, #20]
+ 80004f0:	f04f 0125 	mov.w	r1, #37	; 0x25
+ 80004f4:	f7ff fe86 	bl	8000204 <delay_us>
+ 80004f8:	e8bd 403e 	ldmia.w	sp!, {r1, r2, r3, r4, r5, lr}
+ 80004fc:	4770      	bx	lr
+
+080004fe <num_to_ascii>:
+ 80004fe:	b50e      	push	{r1, r2, r3, lr}
+ 8000500:	f242 730f 	movw	r3, #9999	; 0x270f
+ 8000504:	4299      	cmp	r1, r3
+ 8000506:	dc12      	bgt.n	800052e <num_to_ascii+0x30>
+ 8000508:	f000 f818 	bl	800053c <binary_to_bcd>
+ 800050c:	4601      	mov	r1, r0
+ 800050e:	f04f 0230 	mov.w	r2, #48	; 0x30
+ 8000512:	f04f 0304 	mov.w	r3, #4
+ 8000516:	ea4f 2000 	mov.w	r0, r0, lsl #8
+ 800051a:	f3c1 0403 	ubfx	r4, r1, #0, #4
+ 800051e:	4414      	add	r4, r2
+ 8000520:	f364 0007 	bfi	r0, r4, #0, #8
+ 8000524:	ea4f 1111 	mov.w	r1, r1, lsr #4
+ 8000528:	3b01      	subs	r3, #1
+ 800052a:	d1f4      	bne.n	8000516 <num_to_ascii+0x18>
+ 800052c:	e003      	b.n	8000536 <num_to_ascii+0x38>
+ 800052e:	f244 5072 	movw	r0, #17778	; 0x4572
+ 8000532:	f2c7 202e 	movt	r0, #29230	; 0x722e
+ 8000536:	e8bd 400e 	ldmia.w	sp!, {r1, r2, r3, lr}
+ 800053a:	4770      	bx	lr
+
+0800053c <binary_to_bcd>:
+ 800053c:	b53e      	push	{r1, r2, r3, r4, r5, lr}
+ 800053e:	f04f 0400 	mov.w	r4, #0
+ 8000542:	fab1 f581 	clz	r5, r1
+ 8000546:	f1c5 0520 	rsb	r5, r5, #32
+ 800054a:	42ac      	cmp	r4, r5
+ 800054c:	d01c      	beq.n	8000588 <binary_to_bcd+0x4c>
+ 800054e:	462a      	mov	r2, r5
+ 8000550:	f04f 0304 	mov.w	r3, #4
+ 8000554:	f000 f81e 	bl	8000594 <variable_ubfx>
+ 8000558:	4603      	mov	r3, r0
+ 800055a:	2b05      	cmp	r3, #5
+ 800055c:	db0b      	blt.n	8000576 <binary_to_bcd+0x3a>
+ 800055e:	f103 0303 	add.w	r3, r3, #3
+ 8000562:	b41c      	push	{r2, r3, r4}
+ 8000564:	4618      	mov	r0, r3
+ 8000566:	4613      	mov	r3, r2
+ 8000568:	4602      	mov	r2, r0
+ 800056a:	f04f 0404 	mov.w	r4, #4
+ 800056e:	f000 f81e 	bl	80005ae <variable_bfi>
+ 8000572:	4601      	mov	r1, r0
+ 8000574:	bc1c      	pop	{r2, r3, r4}
+ 8000576:	f102 0204 	add.w	r2, r2, #4
+ 800057a:	2a1c      	cmp	r2, #28
+ 800057c:	dbe8      	blt.n	8000550 <binary_to_bcd+0x14>
+ 800057e:	ea4f 0141 	mov.w	r1, r1, lsl #1
+ 8000582:	f104 0401 	add.w	r4, r4, #1
+ 8000586:	e7e0      	b.n	800054a <binary_to_bcd+0xe>
+ 8000588:	fa21 f105 	lsr.w	r1, r1, r5
+ 800058c:	4608      	mov	r0, r1
+ 800058e:	e8bd 403e 	ldmia.w	sp!, {r1, r2, r3, r4, r5, lr}
+ 8000592:	4770      	bx	lr
+
+08000594 <variable_ubfx>:
+ 8000594:	b41e      	push	{r1, r2, r3, r4}
+ 8000596:	fa21 f102 	lsr.w	r1, r1, r2
+ 800059a:	f64f 74ff 	movw	r4, #65535	; 0xffff
+ 800059e:	f6cf 74ff 	movt	r4, #65535	; 0xffff
+ 80005a2:	fa04 f403 	lsl.w	r4, r4, r3
+ 80005a6:	ea21 0004 	bic.w	r0, r1, r4
+ 80005aa:	bc1e      	pop	{r1, r2, r3, r4}
+ 80005ac:	4770      	bx	lr
+
+080005ae <variable_bfi>:
+ 80005ae:	b47e      	push	{r1, r2, r3, r4, r5, r6}
+ 80005b0:	fa02 f203 	lsl.w	r2, r2, r3
+ 80005b4:	f64f 75ff 	movw	r5, #65535	; 0xffff
+ 80005b8:	f6cf 75ff 	movt	r5, #65535	; 0xffff
+ 80005bc:	eb03 0604 	add.w	r6, r3, r4
+ 80005c0:	fa05 f506 	lsl.w	r5, r5, r6
+ 80005c4:	ea22 0205 	bic.w	r2, r2, r5
+ 80005c8:	f64f 75ff 	movw	r5, #65535	; 0xffff
+ 80005cc:	f6cf 75ff 	movt	r5, #65535	; 0xffff
+ 80005d0:	f1c4 0620 	rsb	r6, r4, #32
+ 80005d4:	fa05 f506 	lsl.w	r5, r5, r6
+ 80005d8:	eb03 0604 	add.w	r6, r3, r4
+ 80005dc:	f1c6 0620 	rsb	r6, r6, #32
+ 80005e0:	fa25 f506 	lsr.w	r5, r5, r6
+ 80005e4:	ea21 0105 	bic.w	r1, r1, r5
+ 80005e8:	ea41 0002 	orr.w	r0, r1, r2
+ 80005ec:	bc7e      	pop	{r1, r2, r3, r4, r5, r6}
+ 80005ee:	4770      	bx	lr
+ 80005f0:	40023800 	.word	0x40023800
+ 80005f4:	40020000 	.word	0x40020000
+ 80005f8:	40020800 	.word	0x40020800
+
+080005fc <led_init>:
+// initializes the led pins as outputs
+// @ param None
+// @ return None
+led_init:
+
+    PUSH {R1-R3}
+ 80005fc:	b40e      	push	{r1, r2, r3}
+
+    // enable GPIOB in RCC
+    LDR R1, =RCC_BASE
+ 80005fe:	491b      	ldr	r1, [pc, #108]	; (800066c <led_disable+0x22>)
+    LDR R2, [R1, #RCC_AHB1ENR]
+ 8000600:	6b0a      	ldr	r2, [r1, #48]	; 0x30
+    ORR R2, R2, #(1<<1) // GPIOBEN is in bit 1
+ 8000602:	f042 0202 	orr.w	r2, r2, #2
+    STR R2, [R1, #RCC_AHB1ENR]
+ 8000606:	630a      	str	r2, [r1, #48]	; 0x30
+
+    // configure pins PB5-PB15 (except PB11) as outputs
+    LDR R1, =GPIOB_BASE
+ 8000608:	4919      	ldr	r1, [pc, #100]	; (8000670 <led_disable+0x26>)
+    LDR R2, [R1, #GPIO_MODER]
+ 800060a:	680a      	ldr	r2, [r1, #0]
+
+    MOVW R3, #0xFC00
+ 800060c:	f64f 4300 	movw	r3, #64512	; 0xfc00
+    MOVT R3, #0xFF3F
+ 8000610:	f6cf 733f 	movt	r3, #65343	; 0xff3f
+    BIC R2, R2, R3
+ 8000614:	ea22 0203 	bic.w	r2, r2, r3
+
+    MOVW R3, #0x5400
+ 8000618:	f245 4300 	movw	r3, #21504	; 0x5400
+    MOVT R3, #0x5515
+ 800061c:	f2c5 5315 	movt	r3, #21781	; 0x5515
+    ORR R2, R2, R3
+ 8000620:	ea42 0203 	orr.w	r2, r2, r3
+
+    STR R2, [R1, #GPIO_MODER]
+ 8000624:	600a      	str	r2, [r1, #0]
+
+    // exit subroutine
+    POP {R1-R3}
+ 8000626:	bc0e      	pop	{r1, r2, r3}
+    BX LR
+ 8000628:	4770      	bx	lr
+
+0800062a <led_enable>:
+// turns on the specified led
+// @ param R1 - the led to turn on, must be between 0 and 9 or the function does nothing
+// @ return None
+led_enable:
+
+    PUSH {R1-R3}
+ 800062a:	b40e      	push	{r1, r2, r3}
+
+    // if led is past led #5, add one to account for PB11 offset
+    CMP R1, #6
+ 800062c:	2906      	cmp	r1, #6
+    BLT 1f
+ 800062e:	db01      	blt.n	8000634 <led_enable+0xa>
+
+    ADD R1, R1, #1
+ 8000630:	f101 0101 	add.w	r1, r1, #1
+
+    // shift the bit until it is in the proper position for ORR-ing
+    // store the final value in R3
+    1:
+    MOV R3, #(1<<5)
+ 8000634:	f04f 0320 	mov.w	r3, #32
+    LSL R3, R3, R1
+ 8000638:	fa03 f301 	lsl.w	r3, r3, r1
+
+    LDR R1, =GPIOB_BASE
+ 800063c:	490c      	ldr	r1, [pc, #48]	; (8000670 <led_disable+0x26>)
+    LDR R2, [R1, #GPIO_ODR]
+ 800063e:	694a      	ldr	r2, [r1, #20]
+    ORR R2, R2, R3
+ 8000640:	ea42 0203 	orr.w	r2, r2, r3
+    STR R2, [R1, #GPIO_ODR]
+ 8000644:	614a      	str	r2, [r1, #20]
+
+    // exit subroutine
+    POP {R1-R3}
+ 8000646:	bc0e      	pop	{r1, r2, r3}
+    BX LR
+ 8000648:	4770      	bx	lr
+
+0800064a <led_disable>:
+// turns off the specified led
+// @ param R1 - the led to turn on, must be between 0 and 9 or the function does nothing
+// @ return None
+led_disable:
+
+    PUSH {R1-R3}
+ 800064a:	b40e      	push	{r1, r2, r3}
+
+    // if led is past led #5, add one to account for PB11 offset
+    CMP R1, #6
+ 800064c:	2906      	cmp	r1, #6
+    BLT 1f
+ 800064e:	db01      	blt.n	8000654 <led_disable+0xa>
+
+    ADD R1, R1, #1
+ 8000650:	f101 0101 	add.w	r1, r1, #1
+
+    // shift the bit until it is in the proper position for ORR-ing
+    // store the final value in R3
+    1:
+    MOV R3, #(1<<5)
+ 8000654:	f04f 0320 	mov.w	r3, #32
+    LSL R3, R3, R1
+ 8000658:	fa03 f301 	lsl.w	r3, r3, r1
+
+    LDR R1, =GPIOB_BASE
+ 800065c:	4904      	ldr	r1, [pc, #16]	; (8000670 <led_disable+0x26>)
+    LDR R2, [R1, #GPIO_ODR]
+ 800065e:	694a      	ldr	r2, [r1, #20]
+    BIC R2, R2, R3
+ 8000660:	ea22 0203 	bic.w	r2, r2, r3
+    STR R2, [R1, #GPIO_ODR]
+ 8000664:	614a      	str	r2, [r1, #20]
+
+    // exit subroutine
+    POP {R1-R3}
+ 8000666:	bc0e      	pop	{r1, r2, r3}
+    BX LR
+ 8000668:	4770      	bx	lr
+ 800066a:	0000      	.short	0x0000
+    LDR R1, =RCC_BASE
+ 800066c:	40023800 	.word	0x40023800
+    LDR R1, =GPIOB_BASE
+ 8000670:	40020400 	.word	0x40020400
+
+08000674 <lock_enter_code>:
+    // R3 - unlock code memory pointer
+    // R4 - maximum length of the unlock code
+    // R5 - current length of the unlock code
+    // R6 - last keypress register
+
+    PUSH {R1-R6, LR}
+ 8000674:	b57e      	push	{r1, r2, r3, r4, r5, r6, lr}
+
+    // move the unlock code memory pointer to the proper register
+    MOV R3, R1
+ 8000676:	460b      	mov	r3, r1
+
+    // initialize the unlock code max length value to equal the number of bytes allocated in memory for the unlock code minus 1
+    MOV R4, R2
+ 8000678:	4614      	mov	r4, r2
+
+    // initialize the unlock code length counter
+    MOV R5, #0
+ 800067a:	f04f 0500 	mov.w	r5, #0
+
+    // initialize the last keypress register
+    MOV R6, #0
+ 800067e:	f04f 0600 	mov.w	r6, #0
+
+    // initialize the bytes the entered code will be written to
+    MOV R1, #0
+ 8000682:	f04f 0100 	mov.w	r1, #0
+    MOV R2, #0
+ 8000686:	f04f 0200 	mov.w	r2, #0
+
+    3:
+
+    STRB R1, [R3, R2]
+ 800068a:	5499      	strb	r1, [r3, r2]
+    ADD R2, R2, #1
+ 800068c:	f102 0201 	add.w	r2, r2, #1
+
+    CMP R2, R4
+ 8000690:	42a2      	cmp	r2, r4
+    BGE 1f
+ 8000692:	da00      	bge.n	8000696 <lock_enter_code+0x22>
+
+    B 3b
+ 8000694:	e7f9      	b.n	800068a <lock_enter_code+0x16>
+
+    // key loop
+    1:
+
+    // get the keypress
+    BL lock_key_get_restricted
+ 8000696:	f000 f826 	bl	80006e6 <lock_key_get_restricted>
+
+    // check to see if current keypress is the last keypress
+    // if true, get the keypress again
+    CMP R0, R6
+ 800069a:	42b0      	cmp	r0, r6
+    BEQ 1b
+ 800069c:	d0fb      	beq.n	8000696 <lock_enter_code+0x22>
+
+    // set last keypress register
+    MOV R6, R0
+ 800069e:	4606      	mov	r6, r0
+
+    // check to see if no key was pressed last keypress
+    // if true, get the keypress again
+    CMP R6, #0
+ 80006a0:	2e00      	cmp	r6, #0
+    BEQ 1b
+ 80006a2:	d0f8      	beq.n	8000696 <lock_enter_code+0x22>
+
+    // check to see if the last keypress is on our terminator key ("#" = key 15)
+    // if true, print unlock code set confirmation and exit subroutine
+    CMP R6, #15
+ 80006a4:	2e0f      	cmp	r6, #15
+    BEQ 2f
+ 80006a6:	d009      	beq.n	80006bc <lock_enter_code+0x48>
+
+    // check to see if the current code is greater than or equal to the max unlock code length
+    // if true, get the keypress again to prevent the user from entering a longer code
+    CMP R5, R4
+ 80006a8:	42a5      	cmp	r5, r4
+    BEQ 1b
+ 80006aa:	d0f4      	beq.n	8000696 <lock_enter_code+0x22>
+
+    // print a star character to the lcd to represent a character in our unlock code
+    MOV R1, #'*'
+ 80006ac:	f04f 012a 	mov.w	r1, #42	; 0x2a
+    BL lcd_print_char
+ 80006b0:	f7ff fecc 	bl	800044c <lcd_print_char>
+
+    // store the number associated with the keypress in memory at the address specified by our pointer and offset by the current length of our unlock code length counter
+    STRB R6, [R3, R5]
+ 80006b4:	555e      	strb	r6, [r3, r5]
+
+    // increment our unlock code length counter
+    ADD R5, R5, #1
+ 80006b6:	f105 0501 	add.w	r5, r5, #1
+
+    // branch back to get the next keypress
+    B 1b
+ 80006ba:	e7ec      	b.n	8000696 <lock_enter_code+0x22>
+
+    // exit subroutine
+    2:
+    POP {R1-R6, LR}
+ 80006bc:	e8bd 407e 	ldmia.w	sp!, {r1, r2, r3, r4, r5, r6, lr}
+    BX LR
+ 80006c0:	4770      	bx	lr
+
+080006c2 <lock_compare_codes>:
+    // R3 - the max length of the unlock code
+    // R4 - the byte counter for sampling bytes
+    // R5 - entered code byte
+    // R6 - unlock code byte
+
+    PUSH {R1-R6}
+ 80006c2:	b47e      	push	{r1, r2, r3, r4, r5, r6}
+
+    // initialize return register
+    MOV R0, #0
+ 80006c4:	f04f 0000 	mov.w	r0, #0
+
+    // initialize byte counter
+    MOV R4, #0
+ 80006c8:	f04f 0400 	mov.w	r4, #0
+
+    1:
+    // if the max length has been met, the codes are equal
+    CMP R4, R3
+ 80006cc:	429c      	cmp	r4, r3
+    BEQ 2f
+ 80006ce:	d006      	beq.n	80006de <lock_compare_codes+0x1c>
+
+    // read entered code byte
+    LDRB R5, [R1, R4]
+ 80006d0:	5d0d      	ldrb	r5, [r1, r4]
+
+    // read unlock code byte
+    LDRB R6, [R2, R4]
+ 80006d2:	5d16      	ldrb	r6, [r2, r4]
+
+    // if the bytes are not equal, the codes are not equal
+    CMP R5, R6
+ 80006d4:	42b5      	cmp	r5, r6
+    BNE 3f
+ 80006d6:	d104      	bne.n	80006e2 <lock_compare_codes+0x20>
+
+    // increment byte counter
+    ADD R4, R4, #1
+ 80006d8:	f104 0401 	add.w	r4, r4, #1
+
+    B 1b
+ 80006dc:	e7f6      	b.n	80006cc <lock_compare_codes+0xa>
+
+    // set return register to be 1
+    2:
+    MOV R0, #1
+ 80006de:	f04f 0001 	mov.w	r0, #1
+
+    // exit subroutine
+    3:
+    POP {R1-R6}
+ 80006e2:	bc7e      	pop	{r1, r2, r3, r4, r5, r6}
+    BX LR
+ 80006e4:	4770      	bx	lr
+
+080006e6 <lock_key_get_restricted>:
+// gets the current keypress and return it if it is a number key or the "#" key, otherwise return 0 for no keypress
+// @ param None
+// @ return R0 - the current keypress if it is a number key or the "#" key, otherwise return 0
+lock_key_get_restricted:
+
+    PUSH {LR}
+ 80006e6:	b500      	push	{lr}
+
+    // get the key
+    BL key_get
+ 80006e8:	f7ff fdb6 	bl	8000258 <key_get>
+
+    // if key is "A", return 0
+    CMP R0, #4
+ 80006ec:	2804      	cmp	r0, #4
+    BEQ 1f
+ 80006ee:	d008      	beq.n	8000702 <lock_key_get_restricted+0x1c>
+
+    // if key is "B", return 0
+    CMP R0, #8
+ 80006f0:	2808      	cmp	r0, #8
+    BEQ 1f
+ 80006f2:	d006      	beq.n	8000702 <lock_key_get_restricted+0x1c>
+
+    // if key is "C", return 0
+    CMP R0, #12
+ 80006f4:	280c      	cmp	r0, #12
+    BEQ 1f
+ 80006f6:	d004      	beq.n	8000702 <lock_key_get_restricted+0x1c>
+
+    // if key is "*", return 0
+    CMP R0, #13
+ 80006f8:	280d      	cmp	r0, #13
+    BEQ 1f
+ 80006fa:	d002      	beq.n	8000702 <lock_key_get_restricted+0x1c>
+
+    // if key is "D", return 0
+    CMP R0, #16
+ 80006fc:	2810      	cmp	r0, #16
+    BEQ 1f
+ 80006fe:	d000      	beq.n	8000702 <lock_key_get_restricted+0x1c>
+
+    // else, just return the actual keypress value
+    B 2f
+ 8000700:	e001      	b.n	8000706 <lock_key_get_restricted+0x20>
+
+    // set return value to 0
+    1:
+    MOV R0, #0
+ 8000702:	f04f 0000 	mov.w	r0, #0
+
+    // exit subroutine
+    2:
+    POP {LR}
+ 8000706:	f85d eb04 	ldr.w	lr, [sp], #4
+    BX LR
+ 800070a:	4770      	bx	lr
+
+0800070c <lock_unlock>:
+// unlocks the lock
+// @ param None
+// @ return None
+lock_unlock:
+
+    PUSH {R1-R2, LR}
+ 800070c:	b506      	push	{r1, r2, lr}
+
+    // enable lights from left to right with a 30ms delay between
+    MOV R2, #10
+ 800070e:	f04f 020a 	mov.w	r2, #10
+
+    1:
+    SUB R1, R2, #1
+ 8000712:	f1a2 0101 	sub.w	r1, r2, #1
+    BL led_enable
+ 8000716:	f7ff ff88 	bl	800062a <led_enable>
+
+    MOV R1, #30
+ 800071a:	f04f 011e 	mov.w	r1, #30
+    BL delay_ms
+ 800071e:	f7ff fd7a 	bl	8000216 <delay_ms>
+
+    SUBS R2, R2, #1
+ 8000722:	3a01      	subs	r2, #1
+    BNE 1b
+ 8000724:	d1f5      	bne.n	8000712 <lock_unlock+0x6>
+
+    // wait for 150ms
+    MOV R1, #150
+ 8000726:	f04f 0196 	mov.w	r1, #150	; 0x96
+    BL delay_ms
+ 800072a:	f7ff fd74 	bl	8000216 <delay_ms>
+
+    // disable lights from left to right with a 30ms delay between
+    MOV R2, #10
+ 800072e:	f04f 020a 	mov.w	r2, #10
+
+    2:
+    SUB R1, R2, #1
+ 8000732:	f1a2 0101 	sub.w	r1, r2, #1
+    BL led_disable
+ 8000736:	f7ff ff88 	bl	800064a <led_disable>
+
+    MOV R1, #30
+ 800073a:	f04f 011e 	mov.w	r1, #30
+    BL delay_ms
+ 800073e:	f7ff fd6a 	bl	8000216 <delay_ms>
+
+    SUBS R2, R2, #1
+ 8000742:	3a01      	subs	r2, #1
+    BNE 2b
+ 8000744:	d1f5      	bne.n	8000732 <lock_unlock+0x26>
+
+    // exit subroutine
+    POP {R1-R2, LR}
+ 8000746:	e8bd 4006 	ldmia.w	sp!, {r1, r2, lr}
+    BX LR
+ 800074a:	4770      	bx	lr
+
+0800074c <lock_play_code_correct_tone>:
+// plays the locks correct code tone
+// @ param None
+// @ return None
+lock_play_code_correct_tone:
+
+	PUSH {R1, R2, LR}
+ 800074c:	b506      	push	{r1, r2, lr}
+
+	// B6 - Eigth
+	MOV R1, #1976
+ 800074e:	f44f 61f7 	mov.w	r1, #1976	; 0x7b8
+    MOV R2, #100
+ 8000752:	f04f 0264 	mov.w	r2, #100	; 0x64
+    BL piezo_play_tone
+ 8000756:	f000 f8ee 	bl	8000936 <piezo_play_tone>
+
+	// E7 - Three Quarter
+    MOV R1, #2637
+ 800075a:	f640 214d 	movw	r1, #2637	; 0xa4d
+    MOV R2, #500
+ 800075e:	f44f 72fa 	mov.w	r2, #500	; 0x1f4
+    BL piezo_play_tone
+ 8000762:	f000 f8e8 	bl	8000936 <piezo_play_tone>
+
+    POP {R1, R2, LR}
+ 8000766:	e8bd 4006 	ldmia.w	sp!, {r1, r2, lr}
+    BX LR
+ 800076a:	4770      	bx	lr
+
+0800076c <lock_play_code_incorrect_tone>:
+// plays the locks incorrect code tone
+// @ param None
+// @ return None
+lock_play_code_incorrect_tone:
+
+	PUSH {R1, R2, LR}
+ 800076c:	b506      	push	{r1, r2, lr}
+
+	// B4 - Quarter
+	MOV R1, #493
+ 800076e:	f240 11ed 	movw	r1, #493	; 0x1ed
+    MOV R2, #200
+ 8000772:	f04f 02c8 	mov.w	r2, #200	; 0xc8
+    BL piezo_play_tone
+ 8000776:	f000 f8de 	bl	8000936 <piezo_play_tone>
+
+	// F5 - Quarter
+    MOV R1, #698
+ 800077a:	f240 21ba 	movw	r1, #698	; 0x2ba
+    MOV R2, #200
+ 800077e:	f04f 02c8 	mov.w	r2, #200	; 0xc8
+    BL piezo_play_tone
+ 8000782:	f000 f8d8 	bl	8000936 <piezo_play_tone>
+
+    // Rest - Eigth
+    MOV R1, #100
+ 8000786:	f04f 0164 	mov.w	r1, #100	; 0x64
+    BL delay_ms
+ 800078a:	f7ff fd44 	bl	8000216 <delay_ms>
+
+	// F5 - Quarter (gap)
+    MOV R1, #698
+ 800078e:	f240 21ba 	movw	r1, #698	; 0x2ba
+    MOV R2, #175
+ 8000792:	f04f 02af 	mov.w	r2, #175	; 0xaf
+    BL piezo_play_tone
+ 8000796:	f000 f8ce 	bl	8000936 <piezo_play_tone>
+
+    MOV R1, #25
+ 800079a:	f04f 0119 	mov.w	r1, #25
+    BL delay_ms
+ 800079e:	f7ff fd3a 	bl	8000216 <delay_ms>
+
+	// F5 - Eigth
+    MOV R1, #698
+ 80007a2:	f240 21ba 	movw	r1, #698	; 0x2ba
+    MOV R2, #100
+ 80007a6:	f04f 0264 	mov.w	r2, #100	; 0x64
+    BL piezo_play_tone
+ 80007aa:	f000 f8c4 	bl	8000936 <piezo_play_tone>
+
+    // Rest - Eigth
+    MOV R1, #100
+ 80007ae:	f04f 0164 	mov.w	r1, #100	; 0x64
+    BL delay_ms
+ 80007b2:	f7ff fd30 	bl	8000216 <delay_ms>
+
+    // E5 - Eigth
+    MOV R1, #659
+ 80007b6:	f240 2193 	movw	r1, #659	; 0x293
+    MOV R2, #100
+ 80007ba:	f04f 0264 	mov.w	r2, #100	; 0x64
+    BL piezo_play_tone
+ 80007be:	f000 f8ba 	bl	8000936 <piezo_play_tone>
+
+    // Rest - Eigth
+    MOV R1, #100
+ 80007c2:	f04f 0164 	mov.w	r1, #100	; 0x64
+    BL delay_ms
+ 80007c6:	f7ff fd26 	bl	8000216 <delay_ms>
+
+    // D5 - Eigth
+    MOV R1, #587
+ 80007ca:	f240 214b 	movw	r1, #587	; 0x24b
+    MOV R2, #100
+ 80007ce:	f04f 0264 	mov.w	r2, #100	; 0x64
+    BL piezo_play_tone
+ 80007d2:	f000 f8b0 	bl	8000936 <piezo_play_tone>
+
+    // Rest - Eigth
+    MOV R1, #100
+ 80007d6:	f04f 0164 	mov.w	r1, #100	; 0x64
+    BL delay_ms
+ 80007da:	f7ff fd1c 	bl	8000216 <delay_ms>
+
+    // C5 - Quarter
+    MOV R1, #523
+ 80007de:	f240 210b 	movw	r1, #523	; 0x20b
+    MOV R2, #200
+ 80007e2:	f04f 02c8 	mov.w	r2, #200	; 0xc8
+    BL piezo_play_tone
+ 80007e6:	f000 f8a6 	bl	8000936 <piezo_play_tone>
+
+    // E4 - Quarter
+    MOV R1, #330
+ 80007ea:	f44f 71a5 	mov.w	r1, #330	; 0x14a
+    MOV R2, #200
+ 80007ee:	f04f 02c8 	mov.w	r2, #200	; 0xc8
+    BL piezo_play_tone
+ 80007f2:	f000 f8a0 	bl	8000936 <piezo_play_tone>
+
+    // Rest - Eigth
+    MOV R1, #100
+ 80007f6:	f04f 0164 	mov.w	r1, #100	; 0x64
+    BL delay_ms
+ 80007fa:	f7ff fd0c 	bl	8000216 <delay_ms>
+
+    // E4 - Quarter
+    MOV R1, #330
+ 80007fe:	f44f 71a5 	mov.w	r1, #330	; 0x14a
+    MOV R2, #200
+ 8000802:	f04f 02c8 	mov.w	r2, #200	; 0xc8
+    BL piezo_play_tone
+ 8000806:	f000 f896 	bl	8000936 <piezo_play_tone>
+
+    // C4 - Quarter + Eigth
+    MOV R1, #262
+ 800080a:	f44f 7183 	mov.w	r1, #262	; 0x106
+    MOV R2, #500
+ 800080e:	f44f 72fa 	mov.w	r2, #500	; 0x1f4
+    BL piezo_play_tone
+ 8000812:	f000 f890 	bl	8000936 <piezo_play_tone>
+
+    POP {R1, R2, LR}
+ 8000816:	e8bd 4006 	ldmia.w	sp!, {r1, r2, lr}
+    BX LR
+ 800081a:	4770      	bx	lr
+
+0800081c <main>:
+.global main
+
+main:
+
+    // initialize peripherals
+    BL key_init
+ 800081c:	f7ff fd10 	bl	8000240 <key_init>
+    BL lcd_init
+ 8000820:	f7ff fd98 	bl	8000354 <lcd_init>
+    BL led_init
+ 8000824:	f7ff feea 	bl	80005fc <led_init>
+	BL piezo_init
+ 8000828:	f000 f86c 	bl	8000904 <piezo_init>
+
+    // print set unlock code string
+    LDR R1, =set_code_string
+ 800082c:	492e      	ldr	r1, [pc, #184]	; (80008e8 <s+0x2>)
+    BL lcd_print_string
+ 800082e:	f7ff fdda 	bl	80003e6 <lcd_print_string>
+
+    // set cursor position to line 2
+    MOV R1, #1
+ 8000832:	f04f 0101 	mov.w	r1, #1
+    MOV R2, #0
+ 8000836:	f04f 0200 	mov.w	r2, #0
+    BL lcd_set_position
+ 800083a:	f7ff fdbf 	bl	80003bc <lcd_set_position>
+
+    // show cursor
+    MOV R1, #0x0D
+ 800083e:	f04f 010d 	mov.w	r1, #13
+    BL lcd_write_instruction
+ 8000842:	f7ff fe23 	bl	800048c <lcd_write_instruction>
+
+    // run lock setup
+    LDR R1, =unlock_code
+ 8000846:	4929      	ldr	r1, [pc, #164]	; (80008ec <s+0x6>)
+    MOV R2, unlock_code_max_length
+ 8000848:	f04f 0208 	mov.w	r2, #8
+    BL lock_enter_code
+ 800084c:	f7ff ff12 	bl	8000674 <lock_enter_code>
+
+    // clear the lcd
+    BL lcd_clear
+ 8000850:	f7ff fd9c 	bl	800038c <lcd_clear>
+
+    // print code confirmation string
+    LDR R1, =set_code_confirm_string
+ 8000854:	4926      	ldr	r1, [pc, #152]	; (80008f0 <s+0xa>)
+    BL lcd_print_string
+ 8000856:	f7ff fdc6 	bl	80003e6 <lcd_print_string>
+
+    // hide the cursor
+    MOV R1, #0x0C
+ 800085a:	f04f 010c 	mov.w	r1, #12
+    BL lcd_write_instruction
+ 800085e:	f7ff fe15 	bl	800048c <lcd_write_instruction>
+
+    // play code correct tone
+    BL lock_play_code_correct_tone
+ 8000862:	f7ff ff73 	bl	800074c <lock_play_code_correct_tone>
+
+    // delay 1000 ms
+    MOV R1, #1000
+ 8000866:	f44f 717a 	mov.w	r1, #1000	; 0x3e8
+    BL delay_ms
+ 800086a:	f7ff fcd4 	bl	8000216 <delay_ms>
+
+0800086e <enter_code>:
+
+	enter_code:
+
+    // clear the lcd
+    BL lcd_clear
+ 800086e:	f7ff fd8d 	bl	800038c <lcd_clear>
+
+    // print enter code string
+    LDR R1, =enter_code_string
+ 8000872:	4920      	ldr	r1, [pc, #128]	; (80008f4 <s+0xe>)
+    BL lcd_print_string
+ 8000874:	f7ff fdb7 	bl	80003e6 <lcd_print_string>
+
+    // set cursor position to line 2
+    MOV R1, #1
+ 8000878:	f04f 0101 	mov.w	r1, #1
+    MOV R2, #0
+ 800087c:	f04f 0200 	mov.w	r2, #0
+    BL lcd_set_position
+ 8000880:	f7ff fd9c 	bl	80003bc <lcd_set_position>
+
+    // show cursor
+    MOV R1, #0x0D
+ 8000884:	f04f 010d 	mov.w	r1, #13
+    BL lcd_write_instruction
+ 8000888:	f7ff fe00 	bl	800048c <lcd_write_instruction>
+
+    // let the user enter a code
+    LDR R1, =entered_code
+ 800088c:	491a      	ldr	r1, [pc, #104]	; (80008f8 <s+0x12>)
+    MOV R2, unlock_code_max_length
+ 800088e:	f04f 0208 	mov.w	r2, #8
+    BL lock_enter_code
+ 8000892:	f7ff feef 	bl	8000674 <lock_enter_code>
+
+    // clear the lcd
+    BL lcd_clear
+ 8000896:	f7ff fd79 	bl	800038c <lcd_clear>
+
+    // compare the codes
+    LDR R1, =unlock_code
+ 800089a:	4914      	ldr	r1, [pc, #80]	; (80008ec <s+0x6>)
+    LDR R2, =entered_code
+ 800089c:	4a16      	ldr	r2, [pc, #88]	; (80008f8 <s+0x12>)
+    LDR R3, =unlock_code_max_length
+ 800089e:	f04f 0308 	mov.w	r3, #8
+    BL lock_compare_codes
+ 80008a2:	f7ff ff0e 	bl	80006c2 <lock_compare_codes>
+
+    CMP R0, #0
+ 80008a6:	2800      	cmp	r0, #0
+    BEQ incorrect
+ 80008a8:	d00f      	beq.n	80008ca <incorrect>
+
+080008aa <correct>:
+
+    // if the codes are equal (correct)
+    correct:
+    // print code correct string
+    LDR R1, =code_correct_string
+ 80008aa:	4914      	ldr	r1, [pc, #80]	; (80008fc <s+0x16>)
+    BL lcd_print_string
+ 80008ac:	f7ff fd9b 	bl	80003e6 <lcd_print_string>
+
+    // hide the cursor
+    MOV R1, #0x0C
+ 80008b0:	f04f 010c 	mov.w	r1, #12
+    BL lcd_write_instruction
+ 80008b4:	f7ff fdea 	bl	800048c <lcd_write_instruction>
+
+    // play code correct tone
+    BL lock_play_code_correct_tone
+ 80008b8:	f7ff ff48 	bl	800074c <lock_play_code_correct_tone>
+
+    // actually unlock the lock
+    BL lock_unlock
+ 80008bc:	f7ff ff26 	bl	800070c <lock_unlock>
+
+    // delay an additional 500ms
+    MOV R1, #500
+ 80008c0:	f44f 71fa 	mov.w	r1, #500	; 0x1f4
+    BL delay_ms
+ 80008c4:	f7ff fca7 	bl	8000216 <delay_ms>
+
+    B enter_code
+ 80008c8:	e7d1      	b.n	800086e <enter_code>
+
+080008ca <incorrect>:
+
+    // if the codes are not equal (incorrect)
+    incorrect:
+    // print code incorrect string
+    LDR R1, =code_incorrect_string
+ 80008ca:	490d      	ldr	r1, [pc, #52]	; (8000900 <s+0x1a>)
+    BL lcd_print_string
+ 80008cc:	f7ff fd8b 	bl	80003e6 <lcd_print_string>
+
+    // hide the cursor
+    MOV R1, #0x0C
+ 80008d0:	f04f 010c 	mov.w	r1, #12
+    BL lcd_write_instruction
+ 80008d4:	f7ff fdda 	bl	800048c <lcd_write_instruction>
+
+	// play incorrect tone
+    BL lock_play_code_incorrect_tone
+ 80008d8:	f7ff ff48 	bl	800076c <lock_play_code_incorrect_tone>
+
+	// delay an additional second
+    MOV R1, #1000
+ 80008dc:	f44f 717a 	mov.w	r1, #1000	; 0x3e8
+    BL delay_ms
+ 80008e0:	f7ff fc99 	bl	8000216 <delay_ms>
+
+    B enter_code
+ 80008e4:	e7c3      	b.n	800086e <enter_code>
+
+080008e6 <s>:
+
+s:  B s
+ 80008e6:	e7fe      	b.n	80008e6 <s>
+    LDR R1, =set_code_string
+ 80008e8:	20000022 	.word	0x20000022
+    LDR R1, =unlock_code
+ 80008ec:	20000012 	.word	0x20000012
+    LDR R1, =set_code_confirm_string
+ 80008f0:	20000030 	.word	0x20000030
+    LDR R1, =enter_code_string
+ 80008f4:	2000003e 	.word	0x2000003e
+    LDR R1, =entered_code
+ 80008f8:	2000001a 	.word	0x2000001a
+    LDR R1, =code_correct_string
+ 80008fc:	2000004e 	.word	0x2000004e
+    LDR R1, =code_incorrect_string
+ 8000900:	2000005b 	.word	0x2000005b
+
+08000904 <piezo_init>:
+// initializes the piezo buzzer
+// @ param None
+// @ return None
+piezo_init:
+
+	PUSH {R1, R2}
+ 8000904:	b406      	push	{r1, r2}
+
+    // enable TIM3 in RCC
+    LDR R1, =RCC_BASE
+ 8000906:	491a      	ldr	r1, [pc, #104]	; (8000970 <piezo_play_tone+0x3a>)
+    LDR R2, [R1, #RCC_APB1ENR]
+ 8000908:	6c0a      	ldr	r2, [r1, #64]	; 0x40
+    ORR R2, R2, #0b10 // TIM3 is bit 1 in APB1ENR
+ 800090a:	f042 0202 	orr.w	r2, r2, #2
+    STR R2, [R1, #RCC_APB1ENR]
+ 800090e:	640a      	str	r2, [r1, #64]	; 0x40
+
+    // enable GPIOB in RCC
+    LDR R2, [R1, #RCC_AHB1ENR]
+ 8000910:	6b0a      	ldr	r2, [r1, #48]	; 0x30
+    ORR R2, R2, #0b10 //GPIOB is bit 1 in AHB1ENR
+ 8000912:	f042 0202 	orr.w	r2, r2, #2
+    STR R2, [R1, #RCC_AHB1ENR]
+ 8000916:	630a      	str	r2, [r1, #48]	; 0x30
+
+    // enable alternate function for PB4
+    LDR R1, =GPIOB_BASE
+ 8000918:	4916      	ldr	r1, [pc, #88]	; (8000974 <piezo_play_tone+0x3e>)
+    LDR R2, [R1, #GPIO_MODER]
+ 800091a:	680a      	ldr	r2, [r1, #0]
+    BIC R2, R2, #(0b11<<8) // mask
+ 800091c:	f422 7240 	bic.w	r2, r2, #768	; 0x300
+    ORR R2, R2, #(0b10<<8) // 10 => alternate function mode
+ 8000920:	f442 7200 	orr.w	r2, r2, #512	; 0x200
+    STR R2, [R1, #GPIO_MODER]
+ 8000924:	600a      	str	r2, [r1, #0]
+
+	// set alternate function for PB4
+    LDR R2, [R1, #GPIO_AFRL]
+ 8000926:	6a0a      	ldr	r2, [r1, #32]
+    BIC R2, R2, #(0b1111<<16) // mask for AFRL for GPIOB pin 4
+ 8000928:	f422 2270 	bic.w	r2, r2, #983040	; 0xf0000
+    ORR R2, R2, #(0b0010<<16) // use AF2 (TIM3..5) for GPIOB pin 4
+ 800092c:	f442 3200 	orr.w	r2, r2, #131072	; 0x20000
+    STR R2, [R1, #GPIO_AFRL]
+ 8000930:	620a      	str	r2, [r1, #32]
+
+	// exit subroutine
+    POP {R1, R2}
+ 8000932:	bc06      	pop	{r1, r2}
+    BX LR
+ 8000934:	4770      	bx	lr
+
+08000936 <piezo_play_tone>:
+    // R3 - the number of periods to emit the frequency on a 16MHz clock
+    // R4 - the number of toggles to emit the frequency on a 16Mhz clock
+    // R5 - address of TIM3_BASE
+    // R6 - temp register
+
+	PUSH {R1-R6, LR}
+ 8000936:	b57e      	push	{r1, r2, r3, r4, r5, r6, lr}
+
+    // number of periods = (16 * 10^6) / frequency
+    MOVW R3, #0x2400
+ 8000938:	f242 4300 	movw	r3, #9216	; 0x2400
+    MOVT R3, #0xF4
+ 800093c:	f2c0 03f4 	movt	r3, #244	; 0xf4
+    UDIV R3, R3, R1
+ 8000940:	fbb3 f3f1 	udiv	r3, r3, r1
+
+    LDR R4, =TIM3_BASE
+ 8000944:	4c0c      	ldr	r4, [pc, #48]	; (8000978 <piezo_play_tone+0x42>)
+
+    // set TIMx_ARR and TIMx_CCR1
+    STR R3, [R4, #TIMx_ARR]
+ 8000946:	62e3      	str	r3, [r4, #44]	; 0x2c
+    STR R3, [R4, #TIMx_CCR1]
+ 8000948:	6363      	str	r3, [r4, #52]	; 0x34
+
+    MOVW R5, #(0b011 << 4)
+ 800094a:	f240 0530 	movw	r5, #48	; 0x30
+    STR R5, [R4, #TIMx_CCMR1]
+ 800094e:	61a5      	str	r5, [r4, #24]
+
+    MOVW R5, #1
+ 8000950:	f240 0501 	movw	r5, #1
+    STR R5, [R4, #TIMx_CCER]
+ 8000954:	6225      	str	r5, [r4, #32]
+
+    // enable the timer
+    MOVW R5, #1
+ 8000956:	f240 0501 	movw	r5, #1
+    STR R5, [R4, #TIMx_CR1]
+ 800095a:	6025      	str	r5, [r4, #0]
+
+    // delay
+    MOV R1, R2
+ 800095c:	4611      	mov	r1, r2
+    BL delay_ms
+ 800095e:	f7ff fc5a 	bl	8000216 <delay_ms>
+
+    // disable the timer
+    MOVW R5, #0
+ 8000962:	f240 0500 	movw	r5, #0
+    STR R5, [R4, #TIMx_CR1]
+ 8000966:	6025      	str	r5, [r4, #0]
+
+	POP {R1-R6, LR}
+ 8000968:	e8bd 407e 	ldmia.w	sp!, {r1, r2, r3, r4, r5, r6, lr}
+    BX LR
+ 800096c:	4770      	bx	lr
+ 800096e:	0000      	.short	0x0000
+    LDR R1, =RCC_BASE
+ 8000970:	40023800 	.word	0x40023800
+    LDR R1, =GPIOB_BASE
+ 8000974:	40020400 	.word	0x40020400
+    LDR R4, =TIM3_BASE
+ 8000978:	40000400 	.word	0x40000400
+
+0800097c <Reset_Handler>:
+ 800097c:	480d      	ldr	r0, [pc, #52]	; (80009b4 <LoopForever+0x2>)
+ 800097e:	4685      	mov	sp, r0
+ 8000980:	480d      	ldr	r0, [pc, #52]	; (80009b8 <LoopForever+0x6>)
+ 8000982:	490e      	ldr	r1, [pc, #56]	; (80009bc <LoopForever+0xa>)
+ 8000984:	4a0e      	ldr	r2, [pc, #56]	; (80009c0 <LoopForever+0xe>)
+ 8000986:	2300      	movs	r3, #0
+ 8000988:	e002      	b.n	8000990 <LoopCopyDataInit>
+
+0800098a <CopyDataInit>:
+ 800098a:	58d4      	ldr	r4, [r2, r3]
+ 800098c:	50c4      	str	r4, [r0, r3]
+ 800098e:	3304      	adds	r3, #4
+
+08000990 <LoopCopyDataInit>:
+ 8000990:	18c4      	adds	r4, r0, r3
+ 8000992:	428c      	cmp	r4, r1
+ 8000994:	d3f9      	bcc.n	800098a <CopyDataInit>
+ 8000996:	4a0b      	ldr	r2, [pc, #44]	; (80009c4 <LoopForever+0x12>)
+ 8000998:	4c0b      	ldr	r4, [pc, #44]	; (80009c8 <LoopForever+0x16>)
+ 800099a:	2300      	movs	r3, #0
+ 800099c:	e001      	b.n	80009a2 <LoopFillZerobss>
+
+0800099e <FillZerobss>:
+ 800099e:	6013      	str	r3, [r2, #0]
+ 80009a0:	3204      	adds	r2, #4
+
+080009a2 <LoopFillZerobss>:
+ 80009a2:	42a2      	cmp	r2, r4
+ 80009a4:	d3fb      	bcc.n	800099e <FillZerobss>
+ 80009a6:	f3af 8000 	nop.w
+ 80009aa:	f000 f811 	bl	80009d0 <__libc_init_array>
+ 80009ae:	f7ff ff35 	bl	800081c <main>
+
+080009b2 <LoopForever>:
+ 80009b2:	e7fe      	b.n	80009b2 <LoopForever>
+ 80009b4:	20020000 	.word	0x20020000
+ 80009b8:	20000000 	.word	0x20000000
+ 80009bc:	2000006c 	.word	0x2000006c
+ 80009c0:	08000a38 	.word	0x08000a38
+ 80009c4:	2000006c 	.word	0x2000006c
+ 80009c8:	20000088 	.word	0x20000088
+
+080009cc <ADC_IRQHandler>:
+ 80009cc:	e7fe      	b.n	80009cc <ADC_IRQHandler>
+	...
+
+080009d0 <__libc_init_array>:
+ 80009d0:	b570      	push	{r4, r5, r6, lr}
+ 80009d2:	4e0d      	ldr	r6, [pc, #52]	; (8000a08 <__libc_init_array+0x38>)
+ 80009d4:	4c0d      	ldr	r4, [pc, #52]	; (8000a0c <__libc_init_array+0x3c>)
+ 80009d6:	1ba4      	subs	r4, r4, r6
+ 80009d8:	10a4      	asrs	r4, r4, #2
+ 80009da:	2500      	movs	r5, #0
+ 80009dc:	42a5      	cmp	r5, r4
+ 80009de:	d109      	bne.n	80009f4 <__libc_init_array+0x24>
+ 80009e0:	4e0b      	ldr	r6, [pc, #44]	; (8000a10 <__libc_init_array+0x40>)
+ 80009e2:	4c0c      	ldr	r4, [pc, #48]	; (8000a14 <__libc_init_array+0x44>)
+ 80009e4:	f000 f818 	bl	8000a18 <_init>
+ 80009e8:	1ba4      	subs	r4, r4, r6
+ 80009ea:	10a4      	asrs	r4, r4, #2
+ 80009ec:	2500      	movs	r5, #0
+ 80009ee:	42a5      	cmp	r5, r4
+ 80009f0:	d105      	bne.n	80009fe <__libc_init_array+0x2e>
+ 80009f2:	bd70      	pop	{r4, r5, r6, pc}
+ 80009f4:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+ 80009f8:	4798      	blx	r3
+ 80009fa:	3501      	adds	r5, #1
+ 80009fc:	e7ee      	b.n	80009dc <__libc_init_array+0xc>
+ 80009fe:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+ 8000a02:	4798      	blx	r3
+ 8000a04:	3501      	adds	r5, #1
+ 8000a06:	e7f2      	b.n	80009ee <__libc_init_array+0x1e>
+ 8000a08:	08000a30 	.word	0x08000a30
+ 8000a0c:	08000a30 	.word	0x08000a30
+ 8000a10:	08000a30 	.word	0x08000a30
+ 8000a14:	08000a34 	.word	0x08000a34
+
+08000a18 <_init>:
+ 8000a18:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000a1a:	bf00      	nop
+ 8000a1c:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000a1e:	bc08      	pop	{r3}
+ 8000a20:	469e      	mov	lr, r3
+ 8000a22:	4770      	bx	lr
+
+08000a24 <_fini>:
+ 8000a24:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000a26:	bf00      	nop
+ 8000a28:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8000a2a:	bc08      	pop	{r3}
+ 8000a2c:	469e      	mov	lr, r3
+ 8000a2e:	4770      	bx	lr
